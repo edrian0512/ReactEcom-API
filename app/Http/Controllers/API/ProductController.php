@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    public function index()
+    {
+        $products = Product::all();
+        return response()->json([
+            'status' => 200,
+            'products' => $products
+        ]);
+    }
 
     public function store(Request $request)
     {
@@ -48,9 +56,9 @@ class ProductController extends Controller
             if ($request->hasfile('image')) {
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension();
-                $filename = time() . ' . ' . $extension;
-                $file->move('uploades/product', $filename);
-                $product->image =  'uploades/product'.$filename;
+                $filename = time() . '.' . $extension;
+                $file->move('uploads/product', $filename);
+                $product->image =  'uploads/product/' . $filename;
             }
 
             $product->featured = $request->input('featured') == true ? '1' : '0';
